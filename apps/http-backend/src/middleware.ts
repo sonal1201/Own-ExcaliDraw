@@ -3,10 +3,15 @@ import jwt from "jsonwebtoken";
 import { JWT_SECERT } from "@repo/backend-common/config";
 
 
-export function middleware (req: Request,res: Response, next: NextFunction){
+export interface CustomRequest extends Request{
+    userId?: string
+}
+
+export function middleware (req: CustomRequest,res: Response, next: NextFunction){
     const token = req.headers["authorization"] ?? "" ;
     
-    const decoded = jwt.verify(token, JWT_SECERT)
+    const decoded = jwt.verify(token, JWT_SECERT) as CustomRequest
+
 
     if(decoded){
         req.userId = decoded.userId;

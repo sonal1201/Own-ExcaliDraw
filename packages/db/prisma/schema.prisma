@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String
+  id       String  @id @default(uuid())
+  email    String  @unique
   password String
   name     String
-  photo    String
+  photo    String?
   rooms    Room[]
   chats    Chat[]
 }
@@ -22,8 +22,8 @@ model Room {
   slug     String   @unique
   createAt DateTime @default(now())
   adminId  String
-  admin    User     @relation(fields: [adminId],references: [id])  //foregin Key
-  chats     Chat[]
+  admin    User     @relation(fields: [adminId], references: [id]) //foregin Key
+  chats    Chat[]
 }
 
 model Chat {
@@ -31,6 +31,6 @@ model Chat {
   roomId  Int
   message String
   userId  String
-  room    Room    @relation(fields: [roomId],references: [id])
-  user    User    @relation(fields: [userId],references: [id])
+  room    Room   @relation(fields: [roomId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }
